@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+    <title>Nice Impact by Playscape</title>
+     <style>
+       body, html {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background-color: #111111;
+    }
+
+    #unity-container {
+        outline: none;
+        border: none;
+    }
+
+    #unity-canvas {
+        outline: none;
+        border: none;
+    }
+    </style>
+  </head>
+  <body>
+	<div id="content-wrapper">
+		<div id="unity-container" style="position:fixed;width:100%;height:100%;">
+		  <canvas id="unity-canvas" tabindex="-1" style="cursor: default;width:100%;height:100%;"></canvas>
+		</div>
+	</div>
+	<script>
+		function adjustLayout() {
+			const container = document.getElementById('unity-container');
+			const canvas = document.getElementById('unity-canvas');
+			const windowWidth = window.innerWidth;
+			const windowHeight = window.innerHeight;
+			
+			// Desired aspect ratio (adjust as needed)
+			const aspectRatio = 16 / 9;
+			
+			// Determine size based on available space
+			let height, width;
+			
+			if (windowWidth / windowHeight > aspectRatio) {
+				// Height is the limiting factor
+				height = windowHeight;
+				width = height * aspectRatio;
+			} else {
+				// Width is the limiting factor
+				width = windowWidth;
+				height = width / aspectRatio;
+			}
+			
+			// Apply sizes
+			container.style.width = `${width}px`;
+			container.style.height = `${height}px`;
+			container.style.position = 'absolute';
+			container.style.top = '50%';
+			container.style.left = '50%';
+			container.style.transform = 'translate(-50%, -50%)';
+			
+			// Ensure canvas matches container
+			canvas.style.width = '100%';
+			canvas.style.height = '100%';
+		}
+
+		// Run on initial load
+		adjustLayout();
+
+		// Re-run on window resize
+		window.addEventListener('resize', adjustLayout);
+	</script>
+
+    <script src="Build/Builds.loader.js"></script>
+    <script>
+      createUnityInstance(document.querySelector("#unity-canvas"), {
+        arguments: [],
+        dataUrl: "Build/Builds.data",
+        frameworkUrl: "Build/Builds.framework.js",
+        codeUrl: "Build/Builds.wasm",
+        streamingAssetsUrl: "StreamingAssets",
+        companyName: "Playscape",
+        productName: "NiceImpact",
+        productVersion: "1.0",
+        // matchWebGLToCanvasSize: false, // Uncomment this to separately control WebGL canvas render size and DOM element size.
+        // devicePixelRatio: 1, // Uncomment this to override low DPI rendering on high DPI displays.
+      });
+    </script>	
+  </body>
+</html>
